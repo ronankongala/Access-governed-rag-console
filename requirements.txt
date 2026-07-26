@@ -5,3 +5,6 @@ Werkzeug==3.1.3
 # sign-in button and runs demo-login-only, so this dependency is not strictly
 # required just to try the project.
 msal==1.31.0
+# Production WSGI server used when deployed (Azure App Service startup command).
+# Local runs can still use `python app.py`; gunicorn is for the hosted server.
+gunicorn==23.0.0

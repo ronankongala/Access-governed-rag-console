@@ -553,12 +553,20 @@ def load_audit_log():
 
 
 def append_audit_entry(entry):
-    log = load_audit_log()
-    log.append(entry)
-    log = log[-MAX_AUDIT_ENTRIES:]
-    os.makedirs(os.path.dirname(AUDIT_LOG_PATH), exist_ok=True)
-    with open(AUDIT_LOG_PATH, "w") as f:
-        json.dump(log, f, indent=2)
+    # On some hosts (e.g. an ephemeral or read-only container filesystem) the
+    # audit file may not be writable. The audit trail is important but a write
+    # failure should not crash the user's request, so we degrade gracefully:
+    # log a warning server-side and continue. In a real deployment this file
+    # sink would be replaced by a SIEM anyway (see README "honest gaps").
+    try:
+        log = load_audit_log()
+        log.append(entry)
+        log = log[-MAX_AUDIT_ENTRIES:]
+        os.makedirs(os.path.dirname(AUDIT_LOG_PATH), exist_ok=True)
+        with open(AUDIT_LOG_PATH, "w") as f:
+            json.dump(log, f, indent=2)
+    except OSError as e:
+        app.logger.warning("Could not persist audit entry: %s", e)
 
 
 @app.route("/api/audit-log", methods=["GET"])
