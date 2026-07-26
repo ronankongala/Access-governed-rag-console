@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Enterprise RAG Console — Access-Governed Corporate Assistant (Server Build)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="dot"></span>
+    <strong>RAG-CONSOLE</strong>&nbsp;/ access-governed corporate assistant &nbsp;<span style="color:var(--muted-2);">· server build</span>
+  </div>
+  <div id="sessionArea" class="session-badge hidden">
+    <span>signed in as <strong id="sessionUser"></strong></span>
+    <span class="role-pill" id="sessionRole"></span>
+    <span class="auth-pill" id="sessionAuth"></span>
+    <button id="logoutBtn">SIGN OUT</button>
+  </div>
+</header>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <h1>SIGN IN</h1>
+    <p class="sub">Role is assigned server-side on authentication. It is no longer a client-side selector — the backend decides what you can retrieve, not a dropdown in the browser.</p>
+
+    <div id="entraSection" class="hidden">
+      <button class="entra-btn" id="entraLoginBtn">
+        <span class="ms-logo" aria-hidden="true"></span>
+        Sign in with Microsoft
+      </button>
+      <div class="entra-note">Real Entra ID OAuth2 flow. Role comes from an Entra app-role claim.</div>
+      <div class="login-divider"><span>or use a demo account</span></div>
+    </div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" type="text" autocomplete="username" />
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" />
+    </div>
+    <button class="primary login-submit" id="loginBtn">Sign in</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="demo-creds">
+      <strong>Demo accounts</strong> (this is a portfolio demo, not a production login):<br>
+      helpdesk_user / helpdesk123 — Help Desk role<br>
+      admin_user / admin123 — IT Admin role
+    </div>
+  </div>
+</div>
+
+<!-- CONSOLE (hidden until authenticated) -->
+<div class="grid hidden" id="consoleGrid">
+
+  <div class="panel">
+    <div class="panel-head">Document Corpus</div>
+    <div class="panel-body" id="corpusPanel"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <span>Assistant</span>
+      <span id="statusText" style="color:var(--muted-2);text-transform:none;letter-spacing:0;">ready</span>
+    </div>
+    <div class="quick-tests" id="quickTests"></div>
+    <div class="chat-log" id="chatLog">
+      <div class="empty-state">No messages yet. Ask a question below, or try one of the test scenarios above.<br><br>Sign out and back in as the other demo account to see the same query produce a different access decision — enforced by the backend, not the UI.</div>
+    </div>
+    <div class="composer">
+      <input id="queryInput" type="text" placeholder="Ask the assistant a question…" />
+      <button class="primary" id="sendBtn">Ask</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <span>Live Audit Log</span>
+      <button id="resetLogBtn" title="Clear audit log" style="font-size:10px;padding:4px 8px;">CLEAR</button>
+    </div>
+    <div class="panel-body" id="auditPanel">
+      <div class="empty-state">Every query, retrieval decision, and access-control outcome is logged here — persisted server-side in data/audit_log.json, not browser storage.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Retrieval: local keyword-overlap scoring, server-side &nbsp;·&nbsp; Generation: Claude (claude-sonnet-4-6) via Anthropic Messages API, called from the backend only &nbsp;·&nbsp; Auth: server-side session, hardcoded demo user table &nbsp;·&nbsp; See README for the production Azure + Entra ID mapping.
+</footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
