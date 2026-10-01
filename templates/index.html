@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Enterprise RAG Console — Access-Governed Corporate Assistant (Server Build)</title>
+<title>Access-Governed RAG Console</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -27,7 +27,7 @@
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
     <h1>SIGN IN</h1>
-    <p class="sub">Role is assigned server-side on authentication. It is no longer a client-side selector — the backend decides what you can retrieve, not a dropdown in the browser.</p>
+    <p class="sub">Role is assigned server-side on authentication. The backend decides what you can retrieve; nothing in the browser can change it.</p>
 
     <div id="entraSection" class="hidden">
       <button class="entra-btn" id="entraLoginBtn">
@@ -50,8 +50,8 @@
     <div class="login-error" id="loginError"></div>
     <div class="demo-creds">
       <strong>Demo accounts</strong> (this is a portfolio demo, not a production login):<br>
-      helpdesk_user / helpdesk123 — Help Desk role<br>
-      admin_user / admin123 — IT Admin role
+      helpdesk_user / helpdesk123 (Help Desk role)<br>
+      admin_user / admin123 (IT Admin role)
     </div>
   </div>
 </div>
@@ -71,7 +71,7 @@
     </div>
     <div class="quick-tests" id="quickTests"></div>
     <div class="chat-log" id="chatLog">
-      <div class="empty-state">No messages yet. Ask a question below, or try one of the test scenarios above.<br><br>Sign out and back in as the other demo account to see the same query produce a different access decision — enforced by the backend, not the UI.</div>
+      <div class="empty-state">No messages yet. Ask a question below, or try one of the test scenarios above.<br><br>Sign out and back in as the other demo account to see the same query produce a different access decision. The backend enforces it, not the UI.</div>
     </div>
     <div class="composer">
       <input id="queryInput" type="text" placeholder="Ask the assistant a question…" />
@@ -85,7 +85,7 @@
       <button id="resetLogBtn" title="Clear audit log" style="font-size:10px;padding:4px 8px;">CLEAR</button>
     </div>
     <div class="panel-body" id="auditPanel">
-      <div class="empty-state">Every query, retrieval decision, and access-control outcome is logged here — persisted server-side in data/audit_log.json, not browser storage.</div>
+      <div class="empty-state">Every query, retrieval decision, and access-control outcome is logged here and persisted server-side in data/audit_log.json, not in browser storage.</div>
     </div>
   </div>
 

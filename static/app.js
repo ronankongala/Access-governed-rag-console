@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------
 // This file is now a thin UI layer. No corpus data, no retrieval scoring, no
-// RBAC logic, and no API key live here — all of that moved server-side into
+// RBAC logic, and no API key live here. All of that moved server-side into
 // app.py. The browser only renders what the backend decides to send it.
 // ---------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ async function enterConsole(sessionData) {
   authPill.textContent = method === 'entra' ? 'via Microsoft Entra ID' : 'via demo login';
   authPill.className = 'auth-pill ' + (method === 'entra' ? 'auth-entra' : 'auth-demo');
   document.getElementById('chatLog').innerHTML =
-    '<div class="empty-state">No messages yet. Ask a question below, or try one of the test scenarios above.<br><br>Sign out and back in as the other demo account to see the same query produce a different access decision — enforced by the backend, not the UI.</div>';
+    '<div class="empty-state">No messages yet. Ask a question below, or try one of the test scenarios above.<br><br>Sign out and back in as the other demo account to see the same query produce a different access decision. The backend enforces it, not the UI.</div>';
   await loadCorpus();
   await loadAuditLog();
 }
@@ -106,7 +106,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
 });
 
 // ---------------------------------------------------------------------------
-// Corpus panel — server tells us what's visible for the current session role
+// Corpus panel: server tells us what's visible for the current session role
 // ---------------------------------------------------------------------------
 async function loadCorpus() {
   const res = await fetch('/api/corpus');
@@ -211,7 +211,7 @@ async function loadAuditLog() {
   const panel = document.getElementById('auditPanel');
 
   if (!data.entries || data.entries.length === 0) {
-    panel.innerHTML = '<div class="empty-state">Every query, retrieval decision, and access-control outcome is logged here — persisted server-side in data/audit_log.json, not browser storage.</div>';
+    panel.innerHTML = '<div class="empty-state">Every query, retrieval decision, and access-control outcome is logged here and persisted server-side in data/audit_log.json, not in browser storage.</div>';
     return;
   }
 
