@@ -26,7 +26,7 @@ env["FLASK_SECRET_KEY"] = "screenshot-session-key"
 # automated flow below still uses demo login. The real Entra end-to-end flow
 # is captured manually (can't be automated without real credentials + MFA).
 env["ENTRA_UI_DEMO"] = "1"
-# No ANTHROPIC_API_KEY on purpose in this sandbox (no outbound network here) —
+# No ANTHROPIC_API_KEY set on purpose for this capture run —
 # the "answered" scenario screenshot will show the honest generation-error
 # path instead of a fabricated answer. Called out in the writeup.
 
@@ -85,7 +85,7 @@ try:
         page.screenshot(path=f"{SHOT_DIR}/05_console_admin_view.png")
 
         # 7. Same restricted query as Admin -> expect it goes through retrieval
-        # (will show generation-error since no API key in this sandbox --
+        # (will show generation-error since no API key is set for this run --
         # still proves retrieval + RBAC pass, matched_doc_ids populated)
         page.fill("#queryInput", "Tell me the firewall rules.")
         page.click("#sendBtn")

@@ -1,7 +1,7 @@
 """
 Exercises the real server logic (auth, session, RBAC-before-scoring,
 audit logging) end to end via Flask's test client. Does not call the live
-Anthropic API (no network in this sandbox) — patches generate_answer so the
+Anthropic API (so it runs offline) — patches generate_answer so the
 retrieval/RBAC/audit path is still tested for real, not mocked out entirely.
 """
 import json
